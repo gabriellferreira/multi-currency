@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.com/gabriellferreira/BaseCleanProject.svg?branch=master)](https://travis-ci.com/gabriellferreira/BaseCleanProject)
+[![Build Status](https://travis-ci.com/gabriellferreira/MulticurrencyProject.svg?branch=master)](https://travis-ci.com/gabriellferreira/MulticurrencyProject)
 
-# BaseCleanProject
+# MulticurrencyProject
 
 * minSdkVersion: 23
 * targetSdkVersion: 29
