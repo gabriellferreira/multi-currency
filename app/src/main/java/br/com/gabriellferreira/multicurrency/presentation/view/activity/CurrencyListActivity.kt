@@ -2,9 +2,9 @@ package br.com.gabriellferreira.multicurrency.presentation.view.activity
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import br.com.gabriellferreira.multicurrency.R
 import br.com.gabriellferreira.multicurrency.domain.model.Currency
 import br.com.gabriellferreira.multicurrency.presentation.util.extension.hide
@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.include_toolbar.*
 class CurrencyListActivity : BaseActivity<CurrencyListContract.Presenter, CurrencyListContract.View>(),
         CurrencyListContract.View {
 
-    private val currencyListAdapter by lazy { CurrencyAdapter() }
+    private val currencyListAdapter by lazy { CurrencyAdapter(view = this) }
     private var currencyClicksDisposable: Disposable? = null
 
     override fun createPresenter(): CurrencyListContract.Presenter {
@@ -61,8 +61,14 @@ class CurrencyListActivity : BaseActivity<CurrencyListContract.Presenter, Curren
         }
     }
 
+    override fun scrollRecyclerTop() {
+        currency_recycler?.smoothScrollToPosition(0)
+    }
+
     override fun addCurrency(currency: Currency) {
-        currencyListAdapter.add(currency)
+        if (currency_recycler?.scrollState == SCROLL_STATE_IDLE) {
+            currencyListAdapter.add(currency)
+        }
     }
 
     override fun clearAdapter() {

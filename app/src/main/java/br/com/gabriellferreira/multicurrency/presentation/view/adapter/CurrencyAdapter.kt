@@ -9,11 +9,15 @@ import br.com.gabriellferreira.multicurrency.domain.model.Currency
 import br.com.gabriellferreira.multicurrency.presentation.util.extension.format
 import br.com.gabriellferreira.multicurrency.presentation.util.extension.inflate
 import br.com.gabriellferreira.multicurrency.presentation.util.extension.loadCenterCrop
+import br.com.gabriellferreira.multicurrency.presentation.view.CurrencyListContract
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.item_currency_cell.view.*
+import java.util.*
+
 
 @Suppress("unused")
-class CurrencyAdapter(private var data: MutableList<Currency> = mutableListOf())
+class CurrencyAdapter(private val data: MutableList<Currency> = mutableListOf(),
+                      private val view: CurrencyListContract.View?)
     : RecyclerView.Adapter<CurrencyAdapter.ViewHolder>() {
 
     val onItemClickSubject: PublishSubject<Currency> = PublishSubject.create<Currency>()
@@ -38,7 +42,10 @@ class CurrencyAdapter(private var data: MutableList<Currency> = mutableListOf())
             view.setOnClickListener { onItemClickSubject.onNext(model) }
             view.item_currency_flag?.loadCenterCrop(model.flagIcon)
             view.item_currency_name?.text = model.name
-            view.item_currency_rate?.text = model.rate.format(model.exponent)
+            view.item_currency_rate?.setText(model.rate.format(model.exponent))
+            view.setOnClickListener {
+                swapItem(position)
+            }
         }
     }
 
@@ -58,5 +65,11 @@ class CurrencyAdapter(private var data: MutableList<Currency> = mutableListOf())
     fun clear() {
         this.data.clear()
         notifyDataSetChanged()
+    }
+
+    fun swapItem(fromPosition: Int, toPosition: Int = 0) {
+        Collections.swap(data, fromPosition, toPosition)
+        notifyItemMoved(fromPosition, toPosition)
+        view?.scrollRecyclerTop()
     }
 }

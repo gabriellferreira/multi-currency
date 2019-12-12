@@ -20,6 +20,7 @@ interface CurrencyListContract {
         fun clearAdapter()
         fun showEmptyView()
         fun hideEmptyView()
+        fun scrollRecyclerTop()
     }
 
     interface Presenter : BaseContract.Presenter<View> {
