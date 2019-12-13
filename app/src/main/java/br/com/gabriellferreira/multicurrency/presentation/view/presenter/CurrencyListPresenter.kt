@@ -11,16 +11,13 @@ import javax.inject.Inject
 class CurrencyListPresenter @Inject constructor(private val latestCurrencyListUseCase: CurrencyUseCase) :
         BasePresenter<CurrencyListContract.View>(), CurrencyListContract.Presenter {
 
-    private var selectedTimePeriod = TimePeriod.ONE_DAY
-
     override fun onInitialize() {
         view?.initViews()
         view?.setupToolbar()
-        loadCurrencyRates()
     }
 
     override fun loadCurrencyRates() {
-        latestCurrencyListUseCase.fetchMostPopularCurrency("EUR", object : Observer<Currency> {
+        latestCurrencyListUseCase.fetchMostPopularCurrency(object : Observer<Currency> {
             var numElements = 0
             override fun onComplete() {
                 if (numElements != 0) {
@@ -53,6 +50,10 @@ class CurrencyListPresenter @Inject constructor(private val latestCurrencyListUs
                 view?.onRefreshFinished()
             }
         })
+    }
+
+    override fun changeCurrencyBase(code: String){
+        latestCurrencyListUseCase.changeCurrencyBase(code)
     }
 
     override fun onCurrencyClicked(currency: Currency) {

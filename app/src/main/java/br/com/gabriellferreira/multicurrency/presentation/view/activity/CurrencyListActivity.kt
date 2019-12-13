@@ -35,6 +35,7 @@ class CurrencyListActivity : BaseActivity<CurrencyListContract.Presenter, Curren
         setContentView(R.layout.activity_currency)
         initToolbar(getString(R.string.currency_title))
         presenter?.onInitialize()
+        presenter?.loadCurrencyRates()
     }
 
     override fun initViews() {
@@ -62,13 +63,17 @@ class CurrencyListActivity : BaseActivity<CurrencyListContract.Presenter, Curren
     }
 
     override fun scrollRecyclerTop() {
-        currency_recycler?.smoothScrollToPosition(0)
+        currency_recycler?.scrollToPosition(0)
     }
 
     override fun addCurrency(currency: Currency) {
         if (currency_recycler?.scrollState == SCROLL_STATE_IDLE) {
             currencyListAdapter.add(currency)
         }
+    }
+
+    override fun setCurrencyAsBase(code: String) {
+        presenter?.changeCurrencyBase(code)
     }
 
     override fun clearAdapter() {

@@ -21,12 +21,14 @@ interface CurrencyListContract {
         fun showEmptyView()
         fun hideEmptyView()
         fun scrollRecyclerTop()
+        fun setCurrencyAsBase(code: String)
     }
 
     interface Presenter : BaseContract.Presenter<View> {
         fun onInitialize()
         fun onCurrencyClicked(currency: Currency)
         fun loadCurrencyRates()
+        fun changeCurrencyBase(code: String)
     }
 
     @Suppress("MagicNumber")

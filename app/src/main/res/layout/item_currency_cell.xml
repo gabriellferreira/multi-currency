@@ -18,9 +18,11 @@
         android:layout_height="wrap_content"
         android:layout_weight="1" />
 
-    <TextView
+    <EditText
         android:id="@+id/item_currency_rate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:inputType="numberDecimal"
+        android:importantForAutofill="no" />
 </LinearLayout>
