@@ -11,7 +11,6 @@ import br.com.gabriellferreira.multicurrency.presentation.util.extension.hide
 import br.com.gabriellferreira.multicurrency.presentation.util.extension.show
 import br.com.gabriellferreira.multicurrency.presentation.view.CurrencyListContract
 import br.com.gabriellferreira.multicurrency.presentation.view.adapter.CurrencyAdapter
-import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_currency.*
 import kotlinx.android.synthetic.main.include_toolbar.*
 
@@ -19,7 +18,6 @@ class CurrencyListActivity : BaseActivity<CurrencyListContract.Presenter, Curren
         CurrencyListContract.View {
 
     private val currencyListAdapter by lazy { CurrencyAdapter(view = this) }
-    private var currencyClicksDisposable: Disposable? = null
 
     override fun createPresenter(): CurrencyListContract.Presenter {
         getControllerComponent().inject(this)
@@ -35,7 +33,16 @@ class CurrencyListActivity : BaseActivity<CurrencyListContract.Presenter, Curren
         setContentView(R.layout.activity_currency)
         initToolbar(getString(R.string.currency_title))
         presenter?.onInitialize()
+    }
+
+    override fun onResume() {
+        super.onResume()
         presenter?.loadCurrencyRates()
+    }
+
+    override fun onPause() {
+        presenter?.disableCurrencyRatesPooling()
+        super.onPause()
     }
 
     override fun initViews() {
@@ -57,9 +64,6 @@ class CurrencyListActivity : BaseActivity<CurrencyListContract.Presenter, Curren
     private fun setupCurrencyRecycler() {
         currency_recycler?.layoutManager = LinearLayoutManager(this)
         currency_recycler?.adapter = currencyListAdapter
-        currencyClicksDisposable = currencyListAdapter.onItemClickSubject.subscribe {
-            presenter?.onCurrencyClicked(it)
-        }
     }
 
     override fun scrollRecyclerTop() {

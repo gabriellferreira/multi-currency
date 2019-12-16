@@ -1,8 +1,6 @@
 package br.com.gabriellferreira.multicurrency.presentation.view
 
-import android.view.MenuItem
 import br.com.gabriellferreira.multicurrency.domain.model.Currency
-import java.util.*
 
 interface CurrencyListContract {
 
@@ -26,15 +24,8 @@ interface CurrencyListContract {
 
     interface Presenter : BaseContract.Presenter<View> {
         fun onInitialize()
-        fun onCurrencyClicked(currency: Currency)
         fun loadCurrencyRates()
         fun changeCurrencyBase(code: String)
-    }
-
-    @Suppress("MagicNumber")
-    enum class TimePeriod(val days: Int) {
-        ONE_DAY(1),
-        SEVEN_DAYS(7),
-        THIRTY_DAYS (30)
+        fun disableCurrencyRatesPooling()
     }
 }

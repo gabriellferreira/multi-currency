@@ -5,7 +5,6 @@ import br.com.gabriellferreira.multicurrency.domain.model.Currency
 import br.com.gabriellferreira.multicurrency.domain.repository.CurrencyRepository
 import io.reactivex.Observable
 import io.reactivex.Observer
-import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 

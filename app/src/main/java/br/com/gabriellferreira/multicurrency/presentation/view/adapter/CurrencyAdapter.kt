@@ -12,16 +12,12 @@ import br.com.gabriellferreira.multicurrency.presentation.util.extension.format
 import br.com.gabriellferreira.multicurrency.presentation.util.extension.inflate
 import br.com.gabriellferreira.multicurrency.presentation.util.extension.loadCenterCrop
 import br.com.gabriellferreira.multicurrency.presentation.view.CurrencyListContract
-import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.item_currency_cell.view.*
 import java.util.*
 
-@Suppress("unused")
 class CurrencyAdapter(private val data: LinkedList<Currency> = LinkedList(),
                       private val view: CurrencyListContract.View?)
     : RecyclerView.Adapter<CurrencyAdapter.ViewHolder>() {
-
-    val onItemClickSubject: PublishSubject<Currency> = PublishSubject.create<Currency>()
 
     private var baseValue: Double = 1.0
 
@@ -54,7 +50,6 @@ class CurrencyAdapter(private val data: LinkedList<Currency> = LinkedList(),
 
         @SuppressLint("SetTextI18n")
         internal fun bind(model: Currency, position: Int) {
-            view.setOnClickListener { onItemClickSubject.onNext(model) }
             view.item_currency_flag?.loadCenterCrop(model.flagIcon)
             view.item_currency_name?.text = model.name
             view.item_currency_code?.text = model.code

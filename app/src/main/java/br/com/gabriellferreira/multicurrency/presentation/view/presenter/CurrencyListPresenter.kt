@@ -4,11 +4,14 @@ import br.com.gabriellferreira.multicurrency.domain.model.Currency
 import br.com.gabriellferreira.multicurrency.domain.usecase.CurrencyUseCase
 import br.com.gabriellferreira.multicurrency.presentation.view.CurrencyListContract
 import io.reactivex.Observer
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 
 class CurrencyListPresenter @Inject constructor(private val latestCurrencyListUseCase: CurrencyUseCase) :
         BasePresenter<CurrencyListContract.View>(), CurrencyListContract.Presenter {
+
+    private val compositeDisposable = CompositeDisposable()
 
     override fun onInitialize() {
         view?.initViews()
@@ -28,6 +31,7 @@ class CurrencyListPresenter @Inject constructor(private val latestCurrencyListUs
             }
 
             override fun onSubscribe(d: Disposable) {
+                compositeDisposable.add(d)
 //                view?.hideContent()
 //                view?.showLoading()
                 view?.hideError()
@@ -44,11 +48,12 @@ class CurrencyListPresenter @Inject constructor(private val latestCurrencyListUs
         })
     }
 
-    override fun changeCurrencyBase(code: String) {
-        latestCurrencyListUseCase.changeCurrencyBase(code)
+    override fun disableCurrencyRatesPooling(){
+        compositeDisposable.clear()
     }
 
-    override fun onCurrencyClicked(currency: Currency) {
-//        view?.redirectWeb(currency.url)
+
+    override fun changeCurrencyBase(code: String) {
+        latestCurrencyListUseCase.changeCurrencyBase(code)
     }
 }
