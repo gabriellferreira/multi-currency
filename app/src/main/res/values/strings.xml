@@ -5,5 +5,5 @@
     <string name="card_empty_message">Unfortunately, at this moment no content was found. Please check again later!</string>
     <string name="card_error_tip">Swipe down to reload</string>
     <string name="main_currency_rates">Check Currency Rates</string>
-    <string name="currency_title">Multi Currency</string>
+    <string name="currency_title">Rates</string>
 </resources>

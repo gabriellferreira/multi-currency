@@ -57,6 +57,7 @@ class CurrencyAdapter(private val data: LinkedList<Currency> = LinkedList(),
             view.setOnClickListener { onItemClickSubject.onNext(model) }
             view.item_currency_flag?.loadCenterCrop(model.flagIcon)
             view.item_currency_name?.text = model.name
+            view.item_currency_code?.text = model.code
             view.item_currency_rate?.setOnFocusChangeListener { _, hasFocus ->
                 if (hasFocus && position > 0) {
                     view.item_currency_rate?.addTextChangedListener(textWatcher)
