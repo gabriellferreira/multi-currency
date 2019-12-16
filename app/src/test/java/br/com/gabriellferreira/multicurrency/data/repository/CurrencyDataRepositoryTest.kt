@@ -1,6 +1,6 @@
 package br.com.gabriellferreira.multicurrency.data.repository
 
-class NewsDataRepositoryTest {
+class CurrencyDataRepositoryTest {
 //
 //    @get:Rule
 //    var schedulersOverrideRule: TrampolineSchedulerRule = TrampolineSchedulerRule()
