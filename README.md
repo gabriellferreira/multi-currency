@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/gabriellferreira/MulticurrencyProject.svg?branch=master)](https://travis-ci.com/gabriellferreira/MulticurrencyProject)
+[![Build Status](https://travis-ci.com/gabriellferreira/multi-currency.svg?branch=master)](https://travis-ci.com/gabriellferreira/multi-currency)
 
 # MulticurrencyProject
 
