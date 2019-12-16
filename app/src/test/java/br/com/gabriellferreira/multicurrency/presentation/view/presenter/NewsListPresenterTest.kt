@@ -1,14 +1,11 @@
 package br.com.gabriellferreira.multicurrency.presentation.view.presenter
 
 import br.com.gabriellferreira.multicurrency.data.model.GenericException
-import br.com.gabriellferreira.multicurrency.data.model.NewsData
-import br.com.gabriellferreira.multicurrency.domain.repository.NewsRepository
 import br.com.gabriellferreira.multicurrency.presentation.di.AppApplication
 import br.com.gabriellferreira.multicurrency.presentation.di.DaggerTestAppComponent
 import br.com.gabriellferreira.multicurrency.presentation.di.TestAppModule
 import br.com.gabriellferreira.multicurrency.presentation.di.TestRepositoryModule
 import br.com.gabriellferreira.multicurrency.presentation.util.TrampolineSchedulerRule
-import br.com.gabriellferreira.multicurrency.presentation.view.NewsListContract
 import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Observable
 import org.junit.Before

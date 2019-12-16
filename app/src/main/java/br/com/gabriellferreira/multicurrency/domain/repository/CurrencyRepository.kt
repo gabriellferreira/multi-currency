@@ -5,5 +5,5 @@ import br.com.gabriellferreira.multicurrency.domain.model.Currency
 import io.reactivex.Observable
 
 interface CurrencyRepository {
-    fun fetchMostPopularNews(baseCurrency: String): Observable<CurrencyData>
+    fun fetchCurrencyRates(baseCurrency: String): Observable<CurrencyData>
 }

@@ -1,7 +1,5 @@
 package br.com.gabriellferreira.multicurrency.data.repository
 
-import br.com.gabriellferreira.multicurrency.data.model.NewsData
-import br.com.gabriellferreira.multicurrency.data.network.api.NewsApi
 import br.com.gabriellferreira.multicurrency.data.storage.SessionPreferences
 import br.com.gabriellferreira.multicurrency.presentation.di.*
 import br.com.gabriellferreira.multicurrency.presentation.util.TrampolineSchedulerRule

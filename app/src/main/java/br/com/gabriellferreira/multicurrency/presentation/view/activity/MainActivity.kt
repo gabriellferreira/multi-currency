@@ -32,10 +32,6 @@ class MainActivity : BaseActivity<MainContract.Presenter, MainContract.View>(),
         }
     }
 
-    override fun redirectLatestNews() {
-        startActivity(NewsActivity.createIntent(this))
-    }
-
     override fun redirectMultiCurrency() {
         startActivity(CurrencyListActivity.createIntent(this))
     }

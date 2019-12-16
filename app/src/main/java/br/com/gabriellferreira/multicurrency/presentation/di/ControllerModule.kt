@@ -8,13 +8,7 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-class ControllerModule(val mActivity: AppCompatActivity) {
-
-    @Provides
-    @ControllerScope
-    fun context(): Context {
-        return mActivity
-    }
+class ControllerModule(private val mActivity: AppCompatActivity) {
 
     @Provides
     @ControllerScope

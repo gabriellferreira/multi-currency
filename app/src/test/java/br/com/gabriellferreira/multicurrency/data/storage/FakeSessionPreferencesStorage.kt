@@ -1,6 +1,5 @@
 package br.com.gabriellferreira.multicurrency.data.storage
 
-import br.com.gabriellferreira.multicurrency.data.model.NewsData
 import br.com.gabriellferreira.multicurrency.data.model.NoDataException
 import io.reactivex.Observable
 

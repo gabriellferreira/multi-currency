@@ -10,18 +10,22 @@ import javax.inject.Inject
 
 class CurrencyUseCase @Inject constructor(private val currencyRepository: CurrencyRepository,
                                           private val currencyMapper: CurrencyMapper) : BaseUseCase() {
-    
+
+    companion object {
+        const val FETCH_CURRENCY_RATES_INTERVAL_SECONDS: Long = 5
+    }
+
     private var currencyBase: String = "EUR"
 
     fun changeCurrencyBase(code: String) {
         currencyBase = code
     }
 
-    fun fetchMostPopularCurrency(observer: Observer<Currency>) {
+    fun fetchCurrencyRates(observer: Observer<Currency>) {
         Observable
-                .interval(2, TimeUnit.SECONDS)
+                .interval(FETCH_CURRENCY_RATES_INTERVAL_SECONDS, TimeUnit.SECONDS)
                 .flatMap {
-                    currencyRepository.fetchMostPopularNews(currencyBase)
+                    currencyRepository.fetchCurrencyRates(currencyBase)
                 }
                 .map {
                     currencyMapper.map(it)

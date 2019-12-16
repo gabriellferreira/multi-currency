@@ -3,7 +3,6 @@ package br.com.gabriellferreira.multicurrency.presentation.view.presenter
 import br.com.gabriellferreira.multicurrency.domain.model.Currency
 import br.com.gabriellferreira.multicurrency.domain.usecase.CurrencyUseCase
 import br.com.gabriellferreira.multicurrency.presentation.view.CurrencyListContract
-import br.com.gabriellferreira.multicurrency.presentation.view.CurrencyListContract.TimePeriod
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
@@ -17,7 +16,7 @@ class CurrencyListPresenter @Inject constructor(private val latestCurrencyListUs
     }
 
     override fun loadCurrencyRates() {
-        latestCurrencyListUseCase.fetchMostPopularCurrency(object : Observer<Currency> {
+        latestCurrencyListUseCase.fetchCurrencyRates(object : Observer<Currency> {
             var numElements = 0
             override fun onComplete() {
                 if (numElements != 0) {

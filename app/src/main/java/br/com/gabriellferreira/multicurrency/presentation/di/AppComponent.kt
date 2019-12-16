@@ -8,6 +8,4 @@ import dagger.Component
 interface AppComponent {
 
     fun newControllerComponent(controllerModule: ControllerModule): ControllerComponent
-
-    fun newServiceComponent(seviceModule: ServiceModule): ServiceComponent
 }

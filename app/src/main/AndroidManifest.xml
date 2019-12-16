@@ -24,9 +24,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.view.activity.NewsActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".presentation.view.activity.CurrencyListActivity"
             android:screenOrientation="portrait" />
     </application>
