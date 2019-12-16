@@ -6,5 +6,6 @@ import com.nhaarman.mockitokotlin2.mock
 
 class TestRepositoryModule : RepositoryModule() {
 
-    override fun provideCurrencyRepository(repository: CurrencyDataRepository): CurrencyRepository = mock()
+    override fun provideCurrencyRepository(repository: CurrencyDataRepository): CurrencyRepository =
+        mock()
 }

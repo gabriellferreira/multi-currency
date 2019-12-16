@@ -16,8 +16,8 @@ class AppApplication : Application() {
     @Suppress("DEPRECATION")
     private fun initInjector() {
         applicationComponent = DaggerAppComponent.builder()
-                .appModule(AppModule(this))
-                .build()
+            .appModule(AppModule(this))
+            .build()
     }
 
     fun getApplicationComponent(): AppComponent {

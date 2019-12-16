@@ -2,7 +2,7 @@ package br.com.gabriellferreira.multicurrency.presentation.view
 
 interface BaseContract {
 
-    interface View{
+    interface View {
         fun showToast(msg: String)
     }
 

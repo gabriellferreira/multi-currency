@@ -11,5 +11,6 @@ open class RepositoryModule {
 
     @Provides
     @ApplicationScope
-    open fun provideCurrencyRepository(repository: CurrencyDataRepository): CurrencyRepository = repository
+    open fun provideCurrencyRepository(repository: CurrencyDataRepository): CurrencyRepository =
+        repository
 }

@@ -6,12 +6,13 @@ import br.com.gabriellferreira.multicurrency.presentation.util.connection.Intern
 import com.nhaarman.mockitokotlin2.mock
 
 class TestAppModule(
-        appApplication: AppApplication
+    appApplication: AppApplication
 ) : AppModule(appApplication) {
 
     override fun provideApplicationContext(): Context = mock()
 
-    override fun provideInternetConnectionVerifier(context: Context): InternetConnectionVerifier = mock()
+    override fun provideInternetConnectionVerifier(context: Context): InternetConnectionVerifier =
+        mock()
 
     override fun provideResources(context: Context): Resources = mock()
 }

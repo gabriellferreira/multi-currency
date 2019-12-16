@@ -9,7 +9,7 @@ import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 
 class CurrencyListPresenter @Inject constructor(private val latestCurrencyListUseCase: CurrencyUseCase) :
-        BasePresenter<CurrencyListContract.View>(), CurrencyListContract.Presenter {
+    BasePresenter<CurrencyListContract.View>(), CurrencyListContract.Presenter {
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -32,11 +32,11 @@ class CurrencyListPresenter @Inject constructor(private val latestCurrencyListUs
 
             override fun onSubscribe(d: Disposable) {
                 compositeDisposable.add(d)
-//                view?.hideContent()
-//                view?.showLoading()
+                view?.showContent()
                 view?.hideError()
-//                view?.clearAdapter()
                 view?.hideEmptyView()
+                view?.hideLoading()
+                view?.onRefreshFinished()
             }
 
             override fun onError(e: Throwable) {
@@ -48,7 +48,7 @@ class CurrencyListPresenter @Inject constructor(private val latestCurrencyListUs
         })
     }
 
-    override fun disableCurrencyRatesPooling(){
+    override fun disableCurrencyRatesPooling() {
         compositeDisposable.clear()
     }
 

@@ -17,5 +17,6 @@ open class AppModule(private val appApplication: AppApplication) {
     open fun provideResources(context: Context): Resources = context.resources
 
     @Provides
-    open fun provideInternetConnectionVerifier(context: Context): InternetConnectionVerifier = DefaultInternetConnectionVerifier(context)
+    open fun provideInternetConnectionVerifier(context: Context): InternetConnectionVerifier =
+        DefaultInternetConnectionVerifier(context)
 }

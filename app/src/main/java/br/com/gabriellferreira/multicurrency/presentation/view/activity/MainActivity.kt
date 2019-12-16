@@ -8,7 +8,7 @@ import br.com.gabriellferreira.multicurrency.presentation.view.MainContract
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity<MainContract.Presenter, MainContract.View>(),
-        MainContract.View {
+    MainContract.View {
 
     override fun createPresenter(): MainContract.Presenter {
         getControllerComponent().inject(this)
@@ -17,7 +17,7 @@ class MainActivity : BaseActivity<MainContract.Presenter, MainContract.View>(),
 
     companion object {
         fun createIntent(context: Context): Intent = Intent(context, MainActivity::class.java)
-                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,7 +1,6 @@
 package br.com.gabriellferreira.multicurrency.data.network.api
 
 import com.google.gson.GsonBuilder
-import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.Interceptor.Companion.invoke
 import okhttp3.OkHttpClient
@@ -23,34 +22,34 @@ open class BaseApi @Inject constructor() {
         val baseUrl = "https://revolut.duckdns.org/"
 
         val builder = OkHttpClient.Builder()
-                .addInterceptor(generalInterceptor())
-                .addInterceptor(logInterceptor())
+            .addInterceptor(generalInterceptor())
+            .addInterceptor(logInterceptor())
 
         val clientBuilder = builder
-                .readTimeout(timeout.toLong(), TimeUnit.SECONDS)
-                .connectTimeout(timeout.toLong(), TimeUnit.SECONDS)
+            .readTimeout(timeout.toLong(), TimeUnit.SECONDS)
+            .connectTimeout(timeout.toLong(), TimeUnit.SECONDS)
 
         val client = clientBuilder.build()
         val retrofitBuilder = Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .client(client)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
+            .baseUrl(baseUrl)
+            .client(client)
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
 
         return retrofitBuilder.build()
     }
 
     private fun generalInterceptor(): Interceptor =
-            invoke { chain ->
-                val original = chain.request()
+        invoke { chain ->
+            val original = chain.request()
 
-                val builder = original.newBuilder()
-                        .header("Content-Type", "application/json")
-                        .method(original.method, original.body)
+            val builder = original.newBuilder()
+                .header("Content-Type", "application/json")
+                .method(original.method, original.body)
 
-                val request = builder.build()
-                chain.proceed(request)
-            }
+            val request = builder.build()
+            chain.proceed(request)
+        }
 
     private fun logInterceptor(): HttpLoggingInterceptor {
         val interceptor = HttpLoggingInterceptor()

@@ -12,7 +12,8 @@ import br.com.gabriellferreira.multicurrency.presentation.util.extension.show
 import br.com.gabriellferreira.multicurrency.presentation.view.BaseContract
 import kotlinx.android.synthetic.main.include_toolbar.*
 
-abstract class BaseActivity<T, in V> : AppCompatActivity(), BaseContract.View where T : BaseContract.Presenter<V>, V : BaseContract.View {
+abstract class BaseActivity<T, in V> : AppCompatActivity(),
+    BaseContract.View where T : BaseContract.Presenter<V>, V : BaseContract.View {
 
     private var mControllerComponent: ControllerComponent? = null
 
@@ -68,7 +69,7 @@ abstract class BaseActivity<T, in V> : AppCompatActivity(), BaseContract.View wh
     protected fun getControllerComponent(): ControllerComponent {
         if (mControllerComponent == null) {
             mControllerComponent = (application as AppApplication).getApplicationComponent()
-                    .newControllerComponent(ControllerModule(this))
+                .newControllerComponent(ControllerModule(this))
         }
         return mControllerComponent!!
     }

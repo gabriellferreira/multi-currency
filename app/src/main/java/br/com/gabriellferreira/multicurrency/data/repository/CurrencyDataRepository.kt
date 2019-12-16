@@ -6,23 +6,32 @@ import br.com.gabriellferreira.multicurrency.domain.repository.CurrencyRepositor
 import io.reactivex.Observable
 import javax.inject.Inject
 
-class CurrencyDataRepository @Inject constructor(private val currencyApi: CurrencyApi) : CurrencyRepository {
+class CurrencyDataRepository @Inject constructor(private val currencyApi: CurrencyApi) :
+    CurrencyRepository {
 
     override fun fetchCurrencyRates(baseCurrency: String): Observable<CurrencyData> =
-            currencyApi.fetchCurrencyRates(baseCurrency)
-                    .map { data ->
-                        val array = mutableListOf<CurrencyData>()
-                        array.add(CurrencyData(base = data.base,
-                                name = data.base,
-                                rate = 1.toDouble()))
-                        data.rates?.forEach {
-                            array.add(CurrencyData(base = baseCurrency,
-                                    name = it.key,
-                                    rate = it.value))
-                        }
-                        array
-                    }
-                    .flatMapIterable {
-                        it
-                    }
+        currencyApi.fetchCurrencyRates(baseCurrency)
+            .map { data ->
+                val array = mutableListOf<CurrencyData>()
+                array.add(
+                    CurrencyData(
+                        base = data.base,
+                        name = data.base,
+                        rate = 1.toDouble()
+                    )
+                )
+                data.rates?.forEach {
+                    array.add(
+                        CurrencyData(
+                            base = baseCurrency,
+                            name = it.key,
+                            rate = it.value
+                        )
+                    )
+                }
+                array
+            }
+            .flatMapIterable {
+                it
+            }
 }

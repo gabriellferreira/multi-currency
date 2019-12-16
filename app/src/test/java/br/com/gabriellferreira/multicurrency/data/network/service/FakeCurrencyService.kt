@@ -8,5 +8,5 @@ class FakeCurrencyService : CurrencyService {
     private val currencyRatesData = CurrencyRatesData()
 
     override fun fetchCurrencyRates(baseCurrency: String): Observable<CurrencyRatesData> =
-            Observable.just(currencyRatesData)
+        Observable.just(currencyRatesData)
 }

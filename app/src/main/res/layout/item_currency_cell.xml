@@ -47,6 +47,6 @@
         android:importantForAutofill="no"
         android:inputType="numberDecimal"
         android:labelFor="@+id/toolbar_title"
-        tools:text="1234.00"
-        tools:ignore="LabelFor" />
+        tools:ignore="LabelFor"
+        tools:text="1234.00" />
 </LinearLayout>

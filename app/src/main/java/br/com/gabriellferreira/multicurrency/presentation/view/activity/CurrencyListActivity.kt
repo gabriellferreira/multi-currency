@@ -14,8 +14,9 @@ import br.com.gabriellferreira.multicurrency.presentation.view.adapter.CurrencyA
 import kotlinx.android.synthetic.main.activity_currency.*
 import kotlinx.android.synthetic.main.include_toolbar.*
 
-class CurrencyListActivity : BaseActivity<CurrencyListContract.Presenter, CurrencyListContract.View>(),
-        CurrencyListContract.View {
+class CurrencyListActivity :
+    BaseActivity<CurrencyListContract.Presenter, CurrencyListContract.View>(),
+    CurrencyListContract.View {
 
     private val currencyListAdapter by lazy { CurrencyAdapter(view = this) }
 

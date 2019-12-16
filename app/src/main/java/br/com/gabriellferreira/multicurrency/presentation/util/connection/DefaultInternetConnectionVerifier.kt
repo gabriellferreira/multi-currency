@@ -8,7 +8,8 @@ import br.com.gabriellferreira.multicurrency.presentation.util.connection.Intern
 import br.com.gabriellferreira.multicurrency.presentation.util.extension.checkInternetConnection
 import javax.inject.Inject
 
-class DefaultInternetConnectionVerifier @Inject constructor(val context: Context) : InternetConnectionVerifier {
+class DefaultInternetConnectionVerifier @Inject constructor(val context: Context) :
+    InternetConnectionVerifier {
 
     override fun isConnectedToInternet() = context.checkInternetConnection()
 

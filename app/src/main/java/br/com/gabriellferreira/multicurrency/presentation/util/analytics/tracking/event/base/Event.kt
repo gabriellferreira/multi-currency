@@ -48,18 +48,18 @@ abstract class Event {
     }
 
     fun getReachability(connectionType: InternetConnectionVerifier.InternetConnectionType): Params.Reachability =
-            when (connectionType) {
-                MOBILE_DATA -> {
-                    Params.Reachability.WWAN
-                }
-                WIFI -> {
-                    Params.Reachability.WIFI
-                }
-                ETHERNET -> {
-                    Params.Reachability.ETHERNET
-                }
-                NO_CONNECTION -> {
-                    Params.Reachability.OFFLINE
-                }
+        when (connectionType) {
+            MOBILE_DATA -> {
+                Params.Reachability.WWAN
             }
+            WIFI -> {
+                Params.Reachability.WIFI
+            }
+            ETHERNET -> {
+                Params.Reachability.ETHERNET
+            }
+            NO_CONNECTION -> {
+                Params.Reachability.OFFLINE
+            }
+        }
 }

@@ -15,9 +15,10 @@ import br.com.gabriellferreira.multicurrency.presentation.view.CurrencyListContr
 import kotlinx.android.synthetic.main.item_currency_cell.view.*
 import java.util.*
 
-class CurrencyAdapter(private val data: LinkedList<Currency> = LinkedList(),
-                      private val view: CurrencyListContract.View?)
-    : RecyclerView.Adapter<CurrencyAdapter.ViewHolder>() {
+class CurrencyAdapter(
+    private val data: LinkedList<Currency> = LinkedList(),
+    private val view: CurrencyListContract.View?
+) : RecyclerView.Adapter<CurrencyAdapter.ViewHolder>() {
 
     private var baseValue: Double = 1.0
 
@@ -34,7 +35,7 @@ class CurrencyAdapter(private val data: LinkedList<Currency> = LinkedList(),
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-            ViewHolder(parent.inflate(R.layout.item_currency_cell))
+        ViewHolder(parent.inflate(R.layout.item_currency_cell))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(data[position], position)

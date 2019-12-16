@@ -12,7 +12,7 @@ import br.com.gabriellferreira.multicurrency.presentation.view.activity.BaseActi
 
 @Suppress("unused")
 abstract class BaseFragment<T, in V> : Fragment(),
-        BaseContract.View where T : BaseContract.Presenter<V>, V : BaseContract.View {
+    BaseContract.View where T : BaseContract.Presenter<V>, V : BaseContract.View {
 
     private var mControllerComponent: ControllerComponent? = null
     protected var presenter: T? = null
@@ -53,7 +53,7 @@ abstract class BaseFragment<T, in V> : Fragment(),
     protected fun getControllerComponent(): ControllerComponent {
         if (mControllerComponent == null) {
             mControllerComponent = AppApplication.applicationComponent
-                    .newControllerComponent(ControllerModule(activity as AppCompatActivity))
+                .newControllerComponent(ControllerModule(activity as AppCompatActivity))
         }
         return mControllerComponent!!
     }

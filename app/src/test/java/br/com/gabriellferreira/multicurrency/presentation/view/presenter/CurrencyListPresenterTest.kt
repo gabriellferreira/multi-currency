@@ -1,102 +1,86 @@
 package br.com.gabriellferreira.multicurrency.presentation.view.presenter
 
+import br.com.gabriellferreira.multicurrency.data.model.CurrencyData
+import br.com.gabriellferreira.multicurrency.data.model.GenericException
+import br.com.gabriellferreira.multicurrency.domain.repository.CurrencyRepository
+import br.com.gabriellferreira.multicurrency.presentation.di.AppApplication
+import br.com.gabriellferreira.multicurrency.presentation.di.DaggerTestAppComponent
+import br.com.gabriellferreira.multicurrency.presentation.di.TestAppModule
+import br.com.gabriellferreira.multicurrency.presentation.di.TestRepositoryModule
+import br.com.gabriellferreira.multicurrency.presentation.util.TrampolineSchedulerRule
+import br.com.gabriellferreira.multicurrency.presentation.view.CurrencyListContract
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
+import io.reactivex.Observable
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mock
+import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
+import javax.inject.Inject
+
 
 @RunWith(RobolectricTestRunner::class)
 class CurrencyListPresenterTest {
-//
-//    @get:Rule
-//    var schedulersOverrideRule: TrampolineSchedulerRule = TrampolineSchedulerRule()
-//    @Inject
-//    lateinit var presenter: NewsListPresenter
-//    @Inject
-//    lateinit var newsRepository: NewsRepository
-//    @Mock
-//    lateinit var view: NewsListContract.View
-//
-//    @Suppress("DEPRECATION")
-//    @Before
-//    fun setup() {
-//        MockitoAnnotations.initMocks(this)
-//        val component = DaggerTestAppComponent.builder()
-//                .appModule(TestAppModule(AppApplication()))
-//                .repositoryModule(TestRepositoryModule())
-//                .build()
-//        component.inject(this)
-//        presenter.attachView(view)
-//        successScenario()
-//    }
-//
-//    //on init presenter
-//    @Test
-//    fun onInitialize_validData_properPresenterInitialization() {
-//        presenter.onInitialize()
-//        verify(view).initViews()
-//        verify(view).setupToolbar()
-//    }
-//
-//    @Test
-//    fun loadMostPopularNews_validData_test_validObservableSubscription() {
-//        presenter.loadMostPopularNews()
-//        verify(view, atLeastOnce()).hideContent()
-//        verify(view).showLoading()
-//        verify(view, atLeastOnce()).hideError()
-//        verify(view).clearAdapter()
-//    }
-//
-//    @Test
-//    fun loadMostPopularNews_validData_successScenario() {
-//        presenter.loadMostPopularNews()
-//        verify(view, atLeastOnce()).hideError()
-//        verify(view).hideLoading()
-//        verify(view).onRefreshFinished()
-//        verify(view, times(2)).addNews(any())
-//        verify(view, never()).showError()
-//        verify(view).showContent()
-//        verify(view, never()).showEmptyView()
-//    }
-//
-//    @Test
-//    fun loadMostPopularNews_validData_genericErrorScenario() {
-//        errorScenario()
-//        presenter.loadMostPopularNews()
-//        verify(view, atLeastOnce()).hideContent()
-//        verify(view).hideLoading()
-//        verify(view).showError()
-//        verify(view).onRefreshFinished()
-//        verify(view, never()).showContent()
-//        verify(view, never()).showEmptyView()
-//    }
-//
-//    @Test
-//    fun loadMostPopularNews_emptyData_emptyValidScenario(){
-//        emptySuccessScenario()
-//        presenter.loadMostPopularNews()
-//        verify(view, atLeastOnce()).hideError()
-//        verify(view).hideLoading()
-//        verify(view).onRefreshFinished()
-//        verify(view, never()).addNews(any())
-//        verify(view, never()).showError()
-//        verify(view, never()).showContent()
-//        verify(view).showEmptyView()
-//    }
-//
-//    private fun successScenario() {
-//        whenever(newsRepository.fetchMostPopularNews(any())).thenReturn(
-//                Observable.just(NewsData(), NewsData())
-//        )
-//    }
-//
-//    private fun emptySuccessScenario() {
-//        whenever(newsRepository.fetchMostPopularNews(any())).thenReturn(
-//                Observable.empty()
-//        )
-//    }
-//
-//    private fun errorScenario() {
-//        whenever(newsRepository.fetchMostPopularNews(any())).thenReturn(
-//                Observable.error(GenericException())
-//        )
-//    }
+
+    @get:Rule
+    var schedulersOverrideRule: TrampolineSchedulerRule = TrampolineSchedulerRule()
+    @Inject
+    lateinit var presenter: CurrencyListPresenter
+    @Inject
+    lateinit var currencyRepository: CurrencyRepository
+    @Mock
+    lateinit var view: CurrencyListContract.View
+
+    @Suppress("DEPRECATION")
+    @Before
+    fun setup() {
+        MockitoAnnotations.initMocks(this)
+        val component = DaggerTestAppComponent.builder()
+            .appModule(TestAppModule(AppApplication()))
+            .repositoryModule(TestRepositoryModule())
+            .build()
+        component.inject(this)
+        presenter.attachView(view)
+        successScenario()
+    }
+
+    //on init presenter
+    @Test
+    fun onInitialize_validData_presenterInitialization() {
+        presenter.onInitialize()
+        verify(view).initViews()
+        verify(view).setupToolbar()
+    }
+
+    private fun successScenario() {
+        whenever(currencyRepository.fetchCurrencyRates(any())).thenReturn(
+            Observable.just(
+                CurrencyData(
+                    base = "EUR",
+                    rate = 1.00,
+                    name = "EUR"
+                ),
+                CurrencyData(
+                    base = "EUR",
+                    rate = 4.70,
+                    name = "BRL"
+                ),
+                CurrencyData(
+                    base = "EUR",
+                    rate = 1.16,
+                    name = "USD"
+                )
+            )
+        )
+    }
+
+    private fun errorScenario() {
+        whenever(currencyRepository.fetchCurrencyRates(any())).thenReturn(
+            Observable.error(GenericException())
+        )
+    }
 }
