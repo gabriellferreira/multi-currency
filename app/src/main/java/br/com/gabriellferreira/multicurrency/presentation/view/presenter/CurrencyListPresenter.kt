@@ -17,29 +17,22 @@ class CurrencyListPresenter @Inject constructor(private val latestCurrencyListUs
 
     override fun loadCurrencyRates() {
         latestCurrencyListUseCase.fetchCurrencyRates(object : Observer<Currency> {
-            var numElements = 0
             override fun onComplete() {
-                if (numElements != 0) {
-                    view?.showContent()
-                } else {
-                    view?.showEmptyView()
-                }
+                view?.showContent()
                 view?.hideLoading()
                 view?.onRefreshFinished()
             }
 
             override fun onNext(t: Currency) {
                 view?.addCurrency(t)
-                numElements++
             }
 
             override fun onSubscribe(d: Disposable) {
-                numElements = 0
 //                view?.hideContent()
 //                view?.showLoading()
-//                view?.hideError()
-                view?.clearAdapter()
-//                view?.hideEmptyView()
+                view?.hideError()
+//                view?.clearAdapter()
+                view?.hideEmptyView()
             }
 
             override fun onError(e: Throwable) {
@@ -51,7 +44,7 @@ class CurrencyListPresenter @Inject constructor(private val latestCurrencyListUs
         })
     }
 
-    override fun changeCurrencyBase(code: String){
+    override fun changeCurrencyBase(code: String) {
         latestCurrencyListUseCase.changeCurrencyBase(code)
     }
 

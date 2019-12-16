@@ -1,6 +1,7 @@
 package br.com.gabriellferreira.multicurrency.presentation.di
 
-import br.com.gabriellferreira.multicurrency.data.network.service.FakeNewsService
+import br.com.gabriellferreira.multicurrency.data.network.service.CurrencyService
+import br.com.gabriellferreira.multicurrency.data.network.service.FakeCurrencyService
 import dagger.Module
 import dagger.Provides
 
@@ -8,5 +9,5 @@ import dagger.Provides
 class TestServiceModule {
 
     @Provides
-    fun provideFakeNewsService(): NewsService = FakeNewsService()
+    fun provideFakeCurrencyService(): CurrencyService = FakeCurrencyService()
 }

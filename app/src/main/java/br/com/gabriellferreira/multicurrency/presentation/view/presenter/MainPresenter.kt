@@ -5,7 +5,7 @@ import javax.inject.Inject
 
 class MainPresenter @Inject constructor() : BasePresenter<MainContract.View>(), MainContract.Presenter {
 
-    override fun onNewsButtonClick() {
+    override fun onCurrencyRatesClick() {
         view?.redirectMultiCurrency()
     }
 }

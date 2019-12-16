@@ -27,8 +27,8 @@ class MainActivity : BaseActivity<MainContract.Presenter, MainContract.View>(),
     }
 
     private fun initListeners() {
-        main_news_button?.setOnClickListener {
-            presenter?.onNewsButtonClick()
+        main_currency_rates_button?.setOnClickListener {
+            presenter?.onCurrencyRatesClick()
         }
     }
 

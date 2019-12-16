@@ -7,6 +7,6 @@ interface MainContract {
     }
 
     interface Presenter : BaseContract.Presenter<View> {
-        fun onNewsButtonClick()
+        fun onCurrencyRatesClick()
     }
 }
