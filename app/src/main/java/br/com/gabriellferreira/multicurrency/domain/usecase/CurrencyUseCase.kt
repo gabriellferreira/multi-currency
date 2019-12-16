@@ -5,6 +5,7 @@ import br.com.gabriellferreira.multicurrency.domain.model.Currency
 import br.com.gabriellferreira.multicurrency.domain.repository.CurrencyRepository
 import io.reactivex.Observable
 import io.reactivex.Observer
+import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -12,7 +13,7 @@ class CurrencyUseCase @Inject constructor(private val currencyRepository: Curren
                                           private val currencyMapper: CurrencyMapper) : BaseUseCase() {
 
     companion object {
-        const val FETCH_CURRENCY_RATES_INTERVAL_SECONDS: Long = 5
+        const val FETCH_CURRENCY_RATES_INTERVAL_SECONDS: Long = 1
     }
 
     private var currencyBase: String = "EUR"
