@@ -35,7 +35,6 @@ class CurrencyAdapter(private val data: LinkedList<Currency> = LinkedList(),
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
