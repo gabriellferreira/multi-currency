@@ -2,7 +2,7 @@ package br.com.gabriellferreira.multicurrency.presentation.di
 
 import br.com.gabriellferreira.multicurrency.data.repository.CurrencyDataRepositoryTest
 import br.com.gabriellferreira.multicurrency.presentation.di.scope.ApplicationScope
-import br.com.gabriellferreira.multicurrency.presentation.view.presenter.CurrencyListPresenterTest
+import br.com.gabriellferreira.multicurrency.presentation.view.viewmodel.CurrencyListPresenterTest
 import dagger.Component
 
 @ApplicationScope

@@ -3,9 +3,7 @@ package br.com.gabriellferreira.multicurrency.domain.usecase
 import br.com.gabriellferreira.multicurrency.data.mapper.CurrencyMapper
 import br.com.gabriellferreira.multicurrency.domain.model.Currency
 import br.com.gabriellferreira.multicurrency.domain.repository.CurrencyRepository
-import io.reactivex.Observable
 import io.reactivex.Observer
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class CurrencyUseCase @Inject constructor(
@@ -24,11 +22,11 @@ class CurrencyUseCase @Inject constructor(
     }
 
     fun fetchCurrencyRates(observer: Observer<Currency>) {
-        Observable
-            .interval(FETCH_CURRENCY_RATES_INTERVAL_SECONDS, TimeUnit.SECONDS, subscribeScheduler)
-            .flatMap {
-                currencyRepository.fetchCurrencyRates(currencyBase)
-            }
+//        Observable
+//            .interval(FETCH_CURRENCY_RATES_INTERVAL_SECONDS, TimeUnit.SECONDS, subscribeScheduler)
+//            .flatMap {
+        currencyRepository.fetchCurrencyRates(currencyBase)
+//            }
             .map {
                 currencyMapper.map(it)
             }

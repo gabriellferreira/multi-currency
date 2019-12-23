@@ -1,4 +1,4 @@
-package br.com.gabriellferreira.multicurrency.presentation.view.presenter
+package br.com.gabriellferreira.multicurrency.presentation.view.viewmodel
 
 import br.com.gabriellferreira.multicurrency.data.model.CurrencyData
 import br.com.gabriellferreira.multicurrency.data.model.GenericException
