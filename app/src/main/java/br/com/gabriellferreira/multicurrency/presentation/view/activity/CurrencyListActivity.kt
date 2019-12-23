@@ -4,27 +4,26 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.gabriellferreira.multicurrency.R
+import br.com.gabriellferreira.multicurrency.domain.model.Currency
 import br.com.gabriellferreira.multicurrency.presentation.di.AppApplication
 import br.com.gabriellferreira.multicurrency.presentation.di.ControllerModule
-import br.com.gabriellferreira.multicurrency.presentation.di.ViewModelFactory
 import br.com.gabriellferreira.multicurrency.presentation.util.extension.hide
 import br.com.gabriellferreira.multicurrency.presentation.util.extension.show
+import br.com.gabriellferreira.multicurrency.presentation.view.adapter.CurrencyAdapter
 import br.com.gabriellferreira.multicurrency.presentation.view.viewmodel.CurrencyListViewModel
 import kotlinx.android.synthetic.main.activity_currency.*
+import java.util.*
 import javax.inject.Inject
 
 class CurrencyListActivity : AppCompatActivity() {
 
-//    private val currencyListAdapter by lazy { CurrencyAdapter() }
+    @Inject
+    lateinit var currencyListViewModel: CurrencyListViewModel
 
-//    @Inject
-//    lateinit var viewModelFactory: ViewModelFactory
-
-//    @Inject
-//    lateinit var currencyListViewModel: CurrencyListViewModel
-
+    private val adapter = CurrencyAdapter()
 
     private val mControllerComponent by lazy {
         (application as AppApplication).getApplicationComponent()
@@ -40,98 +39,43 @@ class CurrencyListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_currency)
         mControllerComponent.inject(this)
 
-//        currencyListViewModel = ViewModelProviders.of(this, viewModelFactory)
-//            .get(CurrencyListViewModel::class.java)
 //        initToolbar(getString(R.string.currency_title))
 //        initViews()
 //        initListeners()
 //        setupToolbar()
-
-//        currencyListViewModel.isDataLoading.observeForever {
-//            if (it == true) {
-//                currency_swipe?.isEnabled = false
-//                currency_progress?.show()
-//            } else {
-//                currency_swipe?.isEnabled = true
-//                currency_progress?.hide()
-//            }
-//        }
+        setupCurrencyRecycler()
+        initObservers()
     }
 
-//    private fun initViews() {
-//        initListeners()
-//        setupCurrencyRecycler()
-//    }
+    override fun onResume() {
+        super.onResume()
+        currencyListViewModel.start()
+    }
 
-//    private fun initListeners() {
-//        currency_swipe?.isEnabled = false
-//        currency_swipe?.setOnRefreshListener {
-//            presenter?.loadCurrencyRates()
+    override fun onPause() {
+        currencyListViewModel.disableCurrencyRatesPooling()
+        super.onPause()
+    }
+
+    private fun initObservers() {
+        currencyListViewModel.isDataLoading.observeForever {
+            if (it == true) {
+                currency_swipe?.isEnabled = false
+                currency_progress?.show()
+            } else {
+                currency_swipe?.isEnabled = true
+                currency_progress?.hide()
+            }
+        }
+
+        currencyListViewModel.items.observe(this,
+            Observer<LinkedList<Currency>> { t -> adapter.submitList(t) })
+//        currencyListViewModel.items.observeForever {
+//            currencyListAdapter.update(it)
 //        }
-//    }
-//
-//    private fun setupToolbar() {
-//        setSupportActionBar(toolbar)
-//    }
-//
-//    private fun setupCurrencyRecycler() {
-//        currency_recycler?.layoutManager = LinearLayoutManager(this)
-//        currency_recycler?.adapter = currencyListAdapter
-//    }
-//
-//    override fun scrollRecyclerTop() {
-//        currency_recycler?.scrollToPosition(0)
-//    }
-//
-//    override fun addCurrency(currency: Currency) {
-//        if (currency_recycler?.scrollState == SCROLL_STATE_IDLE) {
-//            currencyListAdapter.add(currency)
-//        }
-//    }
-//
-//    override fun setCurrencyAsBase(code: String) {
-//        presenter?.changeCurrencyBase(code)
-//    }
-//
-//    override fun clearAdapter() {
-//        currencyListAdapter.clear()
-//    }
-//
-//    override fun showLoading() {
-//        currency_swipe?.isEnabled = false
-//        currency_progress?.show()
-//    }
-//
-//    override fun hideLoading() {
-//        currency_swipe?.isEnabled = true
-//        currency_progress?.hide()
-//    }
-//
-//    override fun showError() {
-//        currency_error_card?.show()
-//    }
-//
-//    override fun hideError() {
-//        currency_error_card?.hide()
-//    }
-//
-//    override fun showContent() {
-//        currency_recycler?.show()
-//    }
-//
-//    override fun hideContent() {
-//        currency_recycler?.hide()
-//    }
-//
-//    override fun showEmptyView() {
-//        currency_empty_card?.show()
-//    }
-//
-//    override fun hideEmptyView() {
-//        currency_empty_card?.hide()
-//    }
-//
-//    override fun onRefreshFinished() {
-//        currency_swipe?.isRefreshing = false
-//    }
+    }
+    private fun setupCurrencyRecycler() {
+        currency_recycler?.layoutManager = LinearLayoutManager(this)
+        currency_recycler?.adapter = adapter
+    }
 }

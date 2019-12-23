@@ -5,6 +5,7 @@ import br.com.gabriellferreira.multicurrency.R
 import br.com.gabriellferreira.multicurrency.data.model.CurrencyData
 import br.com.gabriellferreira.multicurrency.data.model.NoDataException
 import br.com.gabriellferreira.multicurrency.domain.model.Currency
+import br.com.gabriellferreira.multicurrency.presentation.util.extension.format
 import java.util.*
 import javax.inject.Inject
 
@@ -19,7 +20,8 @@ class CurrencyMapper @Inject constructor() {
             name = foreignCurrency.coinName,
             flagIcon = foreignCurrency.flagIcon,
             exponent = foreignCurrency.exponent,
-            code = foreignCurrency.name
+            code = foreignCurrency.name,
+            rateString = data.rate.format(foreignCurrency.exponent)
         )
     }
 
