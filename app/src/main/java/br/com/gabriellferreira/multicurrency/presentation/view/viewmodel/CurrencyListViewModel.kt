@@ -24,20 +24,23 @@ class CurrencyListViewModel @Inject constructor(
     private val _isDataLoading = MutableLiveData<Boolean>()
     val isDataLoading: LiveData<Boolean> = _isDataLoading
 
+    private val _updateItem = MutableLiveData<Int>()
+    val updateItem: LiveData<Int> = _updateItem
+
     fun start() {
         loadCurrencyRates()
     }
 
     private fun loadCurrencyRates() {
-        useCase.fetchCurrencyRates(object : Observer<List<Currency>> {
+        useCase.fetchCurrencyRates(object : Observer<Currency> {
             override fun onComplete() {
 //                view?.showContent()
 //                view?.hideLoading()
 //                view?.onRefreshFinished()
             }
 
-            override fun onNext(list: List<Currency>) {
-                _items.value = LinkedList(list)
+            override fun onNext(item: Currency) {
+                addItem(item)
                 if (_isDataLoading.value == true) {
                     _isDataLoading.value = false
                 }
@@ -54,6 +57,25 @@ class CurrencyListViewModel @Inject constructor(
         })
     }
 
+    private fun addItem(item: Currency) {
+        val index = _items.value?.indexOfFirst {
+            it.code == item.code
+        } ?: -1
+
+        println("addItem $index")
+
+        if (index == 0) {
+            return
+        }
+
+        if (index > 0) {
+            _items.value?.set(index, item)
+            _items.value = _items.value
+        } else {
+            _items.value?.add(item)
+        }
+    }
+
     override fun onCleared() {
         compositeDisposable.clear()
         super.onCleared()
@@ -61,5 +83,14 @@ class CurrencyListViewModel @Inject constructor(
 
     fun disableCurrencyRatesPooling() {
         compositeDisposable.clear()
+    }
+
+    fun setCurrencyAsBase(code: String, baseValue: Double) {
+        useCase.changeCurrencyBase(code, baseValue)
+        val currency = _items.value?.first {
+            it.code == code
+        }
+        _items.value?.remove(currency)
+        _items.value?.addFirst(currency)
     }
 }

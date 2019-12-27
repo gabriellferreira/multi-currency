@@ -4,5 +4,5 @@ import br.com.gabriellferreira.multicurrency.data.model.CurrencyData
 import io.reactivex.Observable
 
 interface CurrencyRepository {
-    fun fetchCurrencyRates(baseCurrency: String): Observable<List<CurrencyData>>
+    fun fetchCurrencyRates(baseCurrency: String): Observable<CurrencyData>
 }

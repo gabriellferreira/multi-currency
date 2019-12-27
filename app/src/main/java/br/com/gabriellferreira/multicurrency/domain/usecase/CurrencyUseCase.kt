@@ -18,21 +18,21 @@ class CurrencyUseCase @Inject constructor(
     }
 
     private var currencyBase: String = "EUR"
+    private var baseValue = 1.0
 
-    fun changeCurrencyBase(code: String) {
+    fun changeCurrencyBase(code: String, value: Double) {
         currencyBase = code
+        baseValue = value
     }
 
-    fun fetchCurrencyRates(observer: Observer<List<Currency>>) {
+    fun fetchCurrencyRates(observer: Observer<Currency>) {
         Observable
             .interval(FETCH_CURRENCY_RATES_INTERVAL_SECONDS, TimeUnit.SECONDS, subscribeScheduler)
             .flatMap {
                 currencyRepository.fetchCurrencyRates(currencyBase)
             }
-            .map { list ->
-                list.map { data ->
-                    currencyMapper.map(data)
-                }
+            .map {
+                currencyMapper.map(it, baseValue)
             }
             .subscribeOn(subscribeScheduler)
             .observeOn(observeScheduler)

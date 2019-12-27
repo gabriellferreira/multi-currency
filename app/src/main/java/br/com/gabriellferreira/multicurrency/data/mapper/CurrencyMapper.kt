@@ -11,7 +11,10 @@ import javax.inject.Inject
 
 class CurrencyMapper @Inject constructor() {
 
-    fun map(data: CurrencyData): Currency {
+    fun map(
+        data: CurrencyData,
+        baseValue: Double
+    ): Currency {
         val foreignCurrency = ForeignCurrency.getCurrency(data.name) ?: throw NoDataException()
         return Currency(
             id = foreignCurrency.id,
@@ -21,7 +24,7 @@ class CurrencyMapper @Inject constructor() {
             flagIcon = foreignCurrency.flagIcon,
             exponent = foreignCurrency.exponent,
             code = foreignCurrency.name,
-            rateString = data.rate.format(foreignCurrency.exponent)
+            rateString = (data.rate * baseValue).format(foreignCurrency.exponent)
         )
     }
 

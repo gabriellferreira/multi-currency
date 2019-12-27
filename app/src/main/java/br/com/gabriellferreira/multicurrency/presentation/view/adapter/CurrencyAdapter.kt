@@ -10,9 +10,10 @@ import br.com.gabriellferreira.multicurrency.R
 import br.com.gabriellferreira.multicurrency.domain.model.Currency
 import br.com.gabriellferreira.multicurrency.presentation.util.extension.inflate
 import br.com.gabriellferreira.multicurrency.presentation.util.extension.loadCenterCrop
+import br.com.gabriellferreira.multicurrency.presentation.view.viewmodel.CurrencyListViewModel
 import kotlinx.android.synthetic.main.item_currency_cell.view.*
 
-class CurrencyAdapter : ListAdapter<Currency, CurrencyAdapter.ViewHolder>(CurrencyLinkedList()) {
+class CurrencyAdapter (val viewModel: CurrencyListViewModel): ListAdapter<Currency, CurrencyAdapter.ViewHolder>(CurrencyLinkedList()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(parent.inflate(R.layout.item_currency_cell))
@@ -48,8 +49,8 @@ class CurrencyAdapter : ListAdapter<Currency, CurrencyAdapter.ViewHolder>(Curren
                     if (hasFocus && position > 0) {
 //                        view.item_currency_rate?.addTextChangedListener(textWatcher)
 //                        addItemAsFirst(model, position)
-                        setCurrencyAsBase(model.code)
-//                        baseValue = view.item_currency_rate?.text.toString().toDouble()
+                        val baseValue = view.item_currency_rate?.text.toString().toDouble()
+                        viewModel.setCurrencyAsBase(model.code, baseValue)
                         scrollRecyclerTop()
                     }
                 }
@@ -69,10 +70,6 @@ class CurrencyAdapter : ListAdapter<Currency, CurrencyAdapter.ViewHolder>(Curren
 
     fun scrollRecyclerTop() {
 //        view?.scrollRecyclerTop()
-    }
-
-    fun setCurrencyAsBase(code: String) {
-//        view?.setCurrencyAsBase(code)
     }
 }
 

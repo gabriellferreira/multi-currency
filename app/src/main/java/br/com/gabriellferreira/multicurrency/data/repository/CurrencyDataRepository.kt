@@ -9,7 +9,7 @@ import javax.inject.Inject
 class CurrencyDataRepository @Inject constructor(private val currencyApi: CurrencyApi) :
     CurrencyRepository {
 
-    override fun fetchCurrencyRates(baseCurrency: String): Observable<List<CurrencyData>> =
+    override fun fetchCurrencyRates(baseCurrency: String): Observable<CurrencyData> =
         currencyApi.fetchCurrencyRates(baseCurrency)
             .map { data ->
                 val array = mutableListOf<CurrencyData>()
@@ -30,5 +30,8 @@ class CurrencyDataRepository @Inject constructor(private val currencyApi: Curren
                     )
                 }
                 array
+            }
+            .flatMapIterable {
+                it
             }
 }

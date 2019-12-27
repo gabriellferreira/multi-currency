@@ -23,7 +23,7 @@ class CurrencyListActivity : AppCompatActivity() {
     @Inject
     lateinit var currencyListViewModel: CurrencyListViewModel
 
-    private val adapter = CurrencyAdapter()
+    private val adapter by lazy { CurrencyAdapter(currencyListViewModel) }
 
     private val mControllerComponent by lazy {
         (application as AppApplication).getApplicationComponent()
@@ -69,11 +69,12 @@ class CurrencyListActivity : AppCompatActivity() {
         }
 
         currencyListViewModel.items.observe(this,
-            Observer<LinkedList<Currency>> { t -> adapter.submitList(t) })
-//        currencyListViewModel.items.observeForever {
-//            currencyListAdapter.update(it)
-//        }
+            Observer<LinkedList<Currency>> { t ->
+                adapter.submitList(t)
+                adapter.notifyDataSetChanged()
+            })
     }
+
     private fun setupCurrencyRecycler() {
         currency_recycler?.layoutManager = LinearLayoutManager(this)
         currency_recycler?.adapter = adapter
