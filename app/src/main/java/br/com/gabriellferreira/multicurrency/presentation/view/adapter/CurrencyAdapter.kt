@@ -10,10 +10,12 @@ import br.com.gabriellferreira.multicurrency.R
 import br.com.gabriellferreira.multicurrency.domain.model.Currency
 import br.com.gabriellferreira.multicurrency.presentation.util.extension.inflate
 import br.com.gabriellferreira.multicurrency.presentation.util.extension.loadCenterCrop
+import br.com.gabriellferreira.multicurrency.presentation.util.extension.parse
 import br.com.gabriellferreira.multicurrency.presentation.view.viewmodel.CurrencyListViewModel
 import kotlinx.android.synthetic.main.item_currency_cell.view.*
 
-class CurrencyAdapter (val viewModel: CurrencyListViewModel): ListAdapter<Currency, CurrencyAdapter.ViewHolder>(CurrencyLinkedList()) {
+class CurrencyAdapter(val viewModel: CurrencyListViewModel) :
+    ListAdapter<Currency, CurrencyAdapter.ViewHolder>(CurrencyLinkedList()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(parent.inflate(R.layout.item_currency_cell))
@@ -45,46 +47,40 @@ class CurrencyAdapter (val viewModel: CurrencyListViewModel): ListAdapter<Curren
                 view.item_currency_flag?.loadCenterCrop(model.flagIcon)
                 view.item_currency_name?.text = model.name
                 view.item_currency_code?.text = model.code
-                view.item_currency_rate?.setOnFocusChangeListener { _, hasFocus ->
+                view.item_currency_rate?.setOnFocusChangeListener { view, hasFocus ->
                     if (hasFocus && position > 0) {
-//                        view.item_currency_rate?.addTextChangedListener(textWatcher)
-//                        addItemAsFirst(model, position)
-                        val baseValue = view.item_currency_rate?.text.toString().toDouble()
+                        val baseValue = Double.parse(view.item_currency_rate?.text.toString())
                         viewModel.setCurrencyAsBase(model.code, baseValue)
-                        scrollRecyclerTop()
+                        view.item_currency_rate?.addTextChangedListener(viewModel.textWatcher)
                     }
                 }
-//                view.item_currency_rate?.removeTextChangedListener(textWatcher)
-//                if (position == 0) {
-//                    view.item_currency_rate?.addTextChangedListener(textWatcher)
-//                }
                 view.item_currency_rate?.setText(model.rateString)
+                if (position == 0) {
+                    view.item_currency_rate?.addTextChangedListener(viewModel.textWatcher)
+                }
             } else {
                 println("Checks brother - Bind - not empty")
+                if (position == 0) {
+                    return
+                }
+                view.item_currency_rate?.removeTextChangedListener(viewModel.textWatcher)
                 if (payloads.contains("rate")) {
                     view.item_currency_rate?.setText(model.rateString)
                 }
             }
         }
     }
-
-    fun scrollRecyclerTop() {
-//        view?.scrollRecyclerTop()
-    }
 }
 
 class CurrencyLinkedList : DiffUtil.ItemCallback<Currency>() {
 
     override fun areItemsTheSame(oldItem: Currency, newItem: Currency): Boolean {
-        return oldItem.id == newItem.id
+        return oldItem.code == newItem.code
     }
 
     override fun areContentsTheSame(oldItem: Currency, newItem: Currency): Boolean {
         println("Checks brother - ${oldItem.rateString == newItem.rateString}")
-        return oldItem.rateString == newItem.rateString &&
-                oldItem.flagIcon == newItem.flagIcon &&
-                oldItem.exponent == newItem.exponent &&
-                oldItem.code == newItem.code
+        return oldItem.rateString == newItem.rateString
     }
 
     override fun getChangePayload(oldItem: Currency, newItem: Currency): Any? {

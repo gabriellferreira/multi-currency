@@ -71,7 +71,6 @@ class CurrencyListActivity : AppCompatActivity() {
         currencyListViewModel.items.observe(this,
             Observer<LinkedList<Currency>> { t ->
                 adapter.submitList(t)
-                adapter.notifyDataSetChanged()
             })
     }
 

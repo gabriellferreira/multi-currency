@@ -1,10 +1,14 @@
 package br.com.gabriellferreira.multicurrency.presentation.view.viewmodel
 
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import br.com.gabriellferreira.multicurrency.domain.model.Currency
 import br.com.gabriellferreira.multicurrency.domain.usecase.CurrencyUseCase
+import br.com.gabriellferreira.multicurrency.presentation.util.extension.parse
 import io.reactivex.Observer
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -17,30 +21,40 @@ class CurrencyListViewModel @Inject constructor(
 
     private val compositeDisposable = CompositeDisposable()
 
-    private val _items =
+    var _items: MutableLiveData<LinkedList<Currency>> =
         MutableLiveData<LinkedList<Currency>>().apply { value = LinkedList() }
-    val items: LiveData<LinkedList<Currency>> = _items
+    var items: LiveData<LinkedList<Currency>> = Transformations.distinctUntilChanged(_items)
 
-    private val _isDataLoading = MutableLiveData<Boolean>()
+    val _isDataLoading = MutableLiveData<Boolean>()
     val isDataLoading: LiveData<Boolean> = _isDataLoading
 
-    private val _updateItem = MutableLiveData<Int>()
-    val updateItem: LiveData<Int> = _updateItem
+    val textWatcher = object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+            useCase.changeBaseValue(Double.parse(s.toString()))
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        }
+    }
 
     fun start() {
         loadCurrencyRates()
     }
 
     private fun loadCurrencyRates() {
-        useCase.fetchCurrencyRates(object : Observer<Currency> {
+
+        useCase.fetchCurrencyRates(object : Observer<List<Currency>> {
             override fun onComplete() {
 //                view?.showContent()
 //                view?.hideLoading()
 //                view?.onRefreshFinished()
             }
 
-            override fun onNext(item: Currency) {
-                addItem(item)
+            override fun onNext(data: List<Currency>) {
+                _items.value = LinkedList(data)
                 if (_isDataLoading.value == true) {
                     _isDataLoading.value = false
                 }
@@ -57,25 +71,6 @@ class CurrencyListViewModel @Inject constructor(
         })
     }
 
-    private fun addItem(item: Currency) {
-        val index = _items.value?.indexOfFirst {
-            it.code == item.code
-        } ?: -1
-
-        println("addItem $index")
-
-        if (index == 0) {
-            return
-        }
-
-        if (index > 0) {
-            _items.value?.set(index, item)
-            _items.value = _items.value
-        } else {
-            _items.value?.add(item)
-        }
-    }
-
     override fun onCleared() {
         compositeDisposable.clear()
         super.onCleared()
@@ -86,11 +81,7 @@ class CurrencyListViewModel @Inject constructor(
     }
 
     fun setCurrencyAsBase(code: String, baseValue: Double) {
-        useCase.changeCurrencyBase(code, baseValue)
-        val currency = _items.value?.first {
-            it.code == code
-        }
-        _items.value?.remove(currency)
-        _items.value?.addFirst(currency)
+        useCase.changeCurrencyBase(code)
+        useCase.changeBaseValue(baseValue)
     }
 }
