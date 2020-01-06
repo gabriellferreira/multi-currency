@@ -15,7 +15,6 @@ import br.com.gabriellferreira.multicurrency.presentation.util.extension.show
 import br.com.gabriellferreira.multicurrency.presentation.view.adapter.CurrencyAdapter
 import br.com.gabriellferreira.multicurrency.presentation.view.viewmodel.CurrencyListViewModel
 import kotlinx.android.synthetic.main.activity_currency.*
-import java.util.*
 import javax.inject.Inject
 
 class CurrencyListActivity : AppCompatActivity() {
