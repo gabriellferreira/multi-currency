@@ -69,7 +69,7 @@ class CurrencyListActivity : AppCompatActivity() {
         }
 
         currencyListViewModel.items.observe(this,
-            Observer<LinkedList<Currency>> { t ->
+            Observer<List<Currency>> { t ->
                 adapter.submitList(t)
             })
     }

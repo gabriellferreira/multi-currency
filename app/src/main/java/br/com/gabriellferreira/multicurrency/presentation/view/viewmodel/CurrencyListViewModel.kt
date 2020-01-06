@@ -4,7 +4,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import br.com.gabriellferreira.multicurrency.domain.model.Currency
 import br.com.gabriellferreira.multicurrency.domain.usecase.CurrencyUseCase
@@ -12,7 +11,6 @@ import br.com.gabriellferreira.multicurrency.presentation.util.extension.parse
 import io.reactivex.Observer
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import java.util.*
 import javax.inject.Inject
 
 class CurrencyListViewModel @Inject constructor(
@@ -21,9 +19,8 @@ class CurrencyListViewModel @Inject constructor(
 
     private val compositeDisposable = CompositeDisposable()
 
-    var _items: MutableLiveData<LinkedList<Currency>> =
-        MutableLiveData<LinkedList<Currency>>().apply { value = LinkedList() }
-    var items: LiveData<LinkedList<Currency>> = Transformations.distinctUntilChanged(_items)
+    var _items: MutableLiveData<List<Currency>> = MutableLiveData()
+    var items: LiveData<List<Currency>> = _items
 
     val _isDataLoading = MutableLiveData<Boolean>()
     val isDataLoading: LiveData<Boolean> = _isDataLoading
@@ -54,7 +51,22 @@ class CurrencyListViewModel @Inject constructor(
             }
 
             override fun onNext(data: List<Currency>) {
-                _items.value = LinkedList(data)
+
+                val tempList = _items.value
+
+                _items.value = if (tempList.isNullOrEmpty()) {
+                    data
+                } else {
+                    mutableListOf<Currency>().apply {
+                        tempList.forEach { item ->
+                            val tempItem = data.first { it.code == item.code }
+                            tempItem.let {
+                                this.add(tempItem)
+                            }
+                        }
+                    }
+                }
+
                 if (_isDataLoading.value == true) {
                     _isDataLoading.value = false
                 }
@@ -81,6 +93,19 @@ class CurrencyListViewModel @Inject constructor(
     }
 
     fun setCurrencyAsBase(code: String, baseValue: Double) {
+
+        val tempList = _items.value?.toMutableList() ?: mutableListOf()
+        val firstItem = tempList.first {
+            it.code == code
+        }
+        tempList.remove(firstItem)
+
+
+        _items.value = mutableListOf<Currency>().apply {
+            add(firstItem)
+            addAll(tempList)
+        }
+
         useCase.changeCurrencyBase(code)
         useCase.changeBaseValue(baseValue)
     }
