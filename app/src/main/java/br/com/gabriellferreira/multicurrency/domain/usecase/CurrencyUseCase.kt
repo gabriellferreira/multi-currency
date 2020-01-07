@@ -55,7 +55,7 @@ class CurrencyUseCase @Inject constructor(
         baseValue = value
     }
 
-    fun fetchCurrencyRates(observer: Observer<List<Currency>>) {
+    fun fetchCurrencyRates(): Observable<List<Currency>> =
         Observable
             .interval(FETCH_CURRENCY_RATES_INTERVAL_SECONDS, TimeUnit.SECONDS, subscribeScheduler)
             .flatMap {
@@ -81,8 +81,4 @@ class CurrencyUseCase @Inject constructor(
                 }
                 currencyList
             }
-            .subscribeOn(subscribeScheduler)
-            .observeOn(observeScheduler)
-            .subscribe(observer)
-    }
 }

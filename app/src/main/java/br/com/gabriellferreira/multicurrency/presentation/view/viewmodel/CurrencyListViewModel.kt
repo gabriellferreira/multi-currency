@@ -6,12 +6,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import br.com.gabriellferreira.multicurrency.domain.model.Currency
 import br.com.gabriellferreira.multicurrency.domain.usecase.CurrencyUseCase
-import io.reactivex.Observer
+import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class CurrencyListViewModel @Inject constructor(
+open class CurrencyListViewModel @Inject constructor(
     private val useCase: CurrencyUseCase
 ) : ViewModel() {
 
@@ -27,31 +28,28 @@ class CurrencyListViewModel @Inject constructor(
         loadCurrencyRates()
     }
 
+    private val subscribeScheduler: Scheduler = Schedulers.io()
+
+    private val observeScheduler: Scheduler = AndroidSchedulers.mainThread()
+
     private fun loadCurrencyRates() {
+        compositeDisposable.add(
+            useCase.fetchCurrencyRates()
+                .subscribeOn(subscribeScheduler)
+                .observeOn(observeScheduler)
+                .subscribe(this::postCurrencyList, this::onFetchError)
+        )
+    }
 
-        useCase.fetchCurrencyRates(object : Observer<List<Currency>> {
-            override fun onComplete() {
-//                view?.showContent()
-//                view?.hideLoading()
-//                view?.onRefreshFinished()
-            }
+    private fun postCurrencyList(list: List<Currency>) {
+        _items.postValue(list)
+        if (_isDataLoading.value == true) {
+            _isDataLoading.postValue(false)
+        }
+    }
 
-            override fun onNext(data: List<Currency>) {
-                _items.value = data
-                if (_isDataLoading.value == true) {
-                    _isDataLoading.value = false
-                }
-            }
-
-            override fun onSubscribe(d: Disposable) {
-                compositeDisposable.add(d)
-                _isDataLoading.value = true
-            }
-
-            override fun onError(e: Throwable) {
-                _isDataLoading.value = false
-            }
-        })
+    private fun onFetchError(error: Throwable) {
+        _isDataLoading.postValue(false)
     }
 
     override fun onCleared() {
