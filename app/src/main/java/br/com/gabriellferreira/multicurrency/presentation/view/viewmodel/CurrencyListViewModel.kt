@@ -1,13 +1,11 @@
 package br.com.gabriellferreira.multicurrency.presentation.view.viewmodel
 
-import android.text.Editable
 import android.text.TextWatcher
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import br.com.gabriellferreira.multicurrency.domain.model.Currency
 import br.com.gabriellferreira.multicurrency.domain.usecase.CurrencyUseCase
-import br.com.gabriellferreira.multicurrency.presentation.util.extension.parse
 import io.reactivex.Observer
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -25,18 +23,6 @@ class CurrencyListViewModel @Inject constructor(
     val _isDataLoading = MutableLiveData<Boolean>()
     val isDataLoading: LiveData<Boolean> = _isDataLoading
 
-    val textWatcher = object : TextWatcher {
-        override fun afterTextChanged(s: Editable?) {
-            useCase.changeBaseValue(Double.parse(s.toString()))
-        }
-
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-        }
-
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        }
-    }
-
     fun start() {
         loadCurrencyRates()
     }
@@ -51,22 +37,7 @@ class CurrencyListViewModel @Inject constructor(
             }
 
             override fun onNext(data: List<Currency>) {
-
-                val tempList = _items.value
-
-                _items.value = if (tempList.isNullOrEmpty()) {
-                    data
-                } else {
-                    mutableListOf<Currency>().apply {
-                        tempList.forEach { item ->
-                            val tempItem = data.first { it.code == item.code }
-                            tempItem.let {
-                                this.add(tempItem)
-                            }
-                        }
-                    }
-                }
-
+                _items.value = data
                 if (_isDataLoading.value == true) {
                     _isDataLoading.value = false
                 }
@@ -93,20 +64,9 @@ class CurrencyListViewModel @Inject constructor(
     }
 
     fun setCurrencyAsBase(code: String, baseValue: Double) {
-
-        val tempList = _items.value?.toMutableList() ?: mutableListOf()
-        val firstItem = tempList.first {
-            it.code == code
-        }
-        tempList.remove(firstItem)
-
-
-        _items.value = mutableListOf<Currency>().apply {
-            add(firstItem)
-            addAll(tempList)
-        }
-
         useCase.changeCurrencyBase(code)
         useCase.changeBaseValue(baseValue)
     }
+
+    fun getCurrencyTextWatcher(): TextWatcher = useCase.currencyTextWatcher
 }

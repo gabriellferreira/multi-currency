@@ -17,6 +17,8 @@ import kotlinx.android.synthetic.main.item_currency_cell.view.*
 class CurrencyAdapter(val viewModel: CurrencyListViewModel) :
     ListAdapter<Currency, CurrencyAdapter.ViewHolder>(CurrencyLinkedList()) {
 
+    private val textWatcher = viewModel.getCurrencyTextWatcher()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(parent.inflate(R.layout.item_currency_cell))
 
@@ -51,19 +53,19 @@ class CurrencyAdapter(val viewModel: CurrencyListViewModel) :
                     if (hasFocus && position > 0) {
                         val baseValue = Double.parse(view.item_currency_rate?.text.toString())
                         viewModel.setCurrencyAsBase(model.code, baseValue)
-                        view.item_currency_rate?.addTextChangedListener(viewModel.textWatcher)
+                        view.item_currency_rate?.addTextChangedListener(textWatcher)
                     }
                 }
                 view.item_currency_rate?.setText(model.rateString)
                 if (position == 0) {
-                    view.item_currency_rate?.addTextChangedListener(viewModel.textWatcher)
+                    view.item_currency_rate?.addTextChangedListener(textWatcher)
                 }
             } else {
                 println("Checks brother - Bind - not empty")
                 if (position == 0) {
                     return
                 }
-                view.item_currency_rate?.removeTextChangedListener(viewModel.textWatcher)
+                view.item_currency_rate?.removeTextChangedListener(textWatcher)
                 if (payloads.contains("rate")) {
                     view.item_currency_rate?.setText(model.rateString)
                 }
