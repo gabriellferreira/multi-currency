@@ -4,7 +4,7 @@ import br.com.gabriellferreira.multicurrency.presentation.di.scope.ApplicationSc
 import dagger.Component
 
 @ApplicationScope
-@Component(modules = [AppModule::class, RepositoryModule::class])
+@Component(modules = [AppModule::class, RepositoryModule::class, ApiModule::class])
 interface AppComponent {
 
     fun newControllerComponent(controllerModule: ControllerModule): ControllerComponent

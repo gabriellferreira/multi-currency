@@ -7,7 +7,6 @@ import br.com.gabriellferreira.multicurrency.domain.model.Currency
 import br.com.gabriellferreira.multicurrency.domain.repository.CurrencyRepository
 import br.com.gabriellferreira.multicurrency.presentation.util.extension.parse
 import io.reactivex.Observable
-import io.reactivex.Observer
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -60,11 +59,6 @@ class CurrencyUseCase @Inject constructor(
             .interval(FETCH_CURRENCY_RATES_INTERVAL_SECONDS, TimeUnit.SECONDS, subscribeScheduler)
             .flatMap {
                 currencyRepository.fetchCurrencyRates(currencyBase)
-            }
-            .map { list ->
-                list.map { data ->
-                    currencyMapper.map(data, baseValue)
-                }
             }
             .map { newList ->
                 currencyList = if (currencyList.isNullOrEmpty()) {
